@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tma_task/core/constants/app_constants.dart';
 
+import '../../core/constants/gradient_button.dart';
 import '../blocs/modal/modal_bloc.dart';
 import '../widgets/custom_modal.dart';
 
@@ -10,14 +12,14 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('TMA Modal')),
       body: Stack(
         children: [
-          Center(
-            child: ElevatedButton(
-              onPressed: () =>
-                  context.read<ModalBloc>().add(const OpenModal('https://flutter.dev')),
-              child: const Text('Open Modal'),
+          SafeArea(
+            child: Center(
+              child: GradientButton(
+                text: 'Open Modal',
+                onPressed: () => context.read<ModalBloc>().add(const OpenModal(AppConstants.url)),
+              ),
             ),
           ),
           BlocBuilder<ModalBloc, ModalBlocState>(

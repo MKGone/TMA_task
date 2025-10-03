@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tma_task/presentation/blocs/modal/modal_bloc.dart';
 import 'package:tma_task/presentation/screens/home_screen.dart';
 
+import 'core/themes/app_theme.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -15,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'TMA Modal',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: AppTheme.light,
       home: BlocProvider(create: (_) => ModalBloc(), child: const HomeScreen()),
     );
   }

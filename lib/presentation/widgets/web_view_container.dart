@@ -18,6 +18,7 @@ class _WebViewContainerState extends State<WebViewContainer> {
   @override
   void initState() {
     super.initState();
+
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(

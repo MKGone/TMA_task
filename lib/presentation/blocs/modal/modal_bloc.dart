@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/entities/modal_entity.dart';
+import '../../../domain/usecases/calculate_snap.dart';
 
 part 'events/modal_event.dart';
 part 'states/modal_state.dart';
@@ -30,8 +31,11 @@ class ModalBloc extends Bloc<ModalEvent, ModalBlocState> {
     final currentData = state.data;
     final currentEntity = currentData.entity;
     if (currentEntity == null) return;
-    final newHeight = (currentEntity.heightPercentage + event.delta).clamp(0.0, 1.0);
-    final newEntity = currentEntity.copyWith(heightPercentage: newHeight);
+    final newHeight = (currentEntity.heightPercentage + event.delta).clamp(0.05, 1.0);
+    final newEntity = currentEntity.copyWith(
+      heightPercentage: newHeight,
+      state: CalculateSnapUseCase().execute(newHeight),
+    );
     emit(ModalOpen(currentData.copyWith(entity: newEntity)));
   }
 
@@ -39,7 +43,7 @@ class ModalBloc extends Bloc<ModalEvent, ModalBlocState> {
     final currentData = state.data;
     final currentEntity = currentData.entity;
     if (currentEntity == null) return;
-    final newState = _calculateSnapState(currentEntity.heightPercentage, event.velocity);
+    final newState = CalculateSnapUseCase().execute(currentEntity.heightPercentage);
     final newHeight = _getHeightForState(newState);
     final newEntity = currentEntity.copyWith(state: newState, heightPercentage: newHeight);
     emit(ModalOpen(currentData.copyWith(entity: newEntity)));
@@ -51,7 +55,7 @@ class ModalBloc extends Bloc<ModalEvent, ModalBlocState> {
     if (currentEntity == null) return;
     final newEntity = currentEntity.copyWith(
       state: ModalViewState.collapsed,
-      heightPercentage: 0.1,
+      heightPercentage: 0.2,
     );
     emit(ModalOpen(currentData.copyWith(entity: newEntity)));
   }
@@ -60,19 +64,10 @@ class ModalBloc extends Bloc<ModalEvent, ModalBlocState> {
     emit(const ModalInitial());
   }
 
-  ModalViewState _calculateSnapState(double heightPercentage, double velocity) {
-    if (velocity.abs() > 500) {
-      return velocity > 0 ? ModalViewState.collapsed : ModalViewState.fullExpanded;
-    }
-    if (heightPercentage < 0.2) return ModalViewState.collapsed;
-    if (heightPercentage < 0.7) return ModalViewState.halfExpanded;
-    return ModalViewState.fullExpanded;
-  }
-
   double _getHeightForState(ModalViewState state) {
     switch (state) {
       case ModalViewState.collapsed:
-        return 0.1;
+        return 0.2;
       case ModalViewState.halfExpanded:
         return 0.5;
       case ModalViewState.fullExpanded:

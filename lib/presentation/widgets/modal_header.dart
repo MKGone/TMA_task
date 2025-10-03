@@ -14,10 +14,6 @@ class ModalHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: () => context.read<ModalBloc>().add(const CloseModal()),
-          ),
           BlocSelector<ModalBloc, ModalBlocState, ModalViewState?>(
             selector: (state) => state is ModalOpen ? state.data.entity?.state : null,
             builder: (context, modalState) {
