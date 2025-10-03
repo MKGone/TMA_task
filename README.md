@@ -11,10 +11,6 @@ A Flutter project implementing a Telegram Mini App-like modal with a bottom-anch
 ## Project Architecture
 The project follows a clean architecture with separation of concerns, organized into **Domain** and **Presentation** layers.
 
-### Folder Structure
-
-lib/├── main.dart                    # App entry point├── domain/│   └── entities/│       └── modal_entity.dart    # ModalEntity and ModalViewState enum├── presentation/│   ├── blocs/│   │   └── modal/│   │       ├── modal_bloc.dart  # BLoC for modal state management│   │       ├── events/│   │       │   └── modal_event.dart  # Modal events (Open, Drag, Collapse, Close)│   │       └── states/│   │           └── modal_state.dart  # Modal states (Initial, Loading, Open, Error)│   ├── screens/│   │   └── home_screen.dart      # Main screen with modal trigger│   └── widgets/│       ├── custom_modal.dart     # Modal UI with drag handling│       ├── drag_handle.dart      # Visual drag handle│       ├── modal_header.dart     # Header with Close/Collapse buttons│       └── web_view_container.dart  # WebView for URL displaypubspec.yaml                     # Dependencies and project config
-
 ## Install Dependencies
 Ensure `pubspec.yaml` includes the required dependencies:
 ```yaml
